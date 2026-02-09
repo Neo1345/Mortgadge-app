@@ -10,6 +10,7 @@ import Alert from "./components/Alert";
 import PendingMort from './components/PendingMort';
 import MortInRed from './components/MortInRed';
 import Admin from './components/Admin';
+import SnapHistory from './components/SnapHistory';
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="/snapshot" element={<Snapshot showalert = {showAlert}/>} />
           <Route path="/pendingmort" element={<PendingMort showalert = {showAlert}/>} />
           <Route path="/mortinred" element={<MortInRed/>} />
+          <Route path="/snaphistory" element={<SnapHistory/>} />
            <Route path="/admin" element={<Admin/>} />
         </Routes>
         </div>

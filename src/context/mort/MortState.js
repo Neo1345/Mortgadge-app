@@ -1,5 +1,7 @@
 import MortContext from "./mortContext";
 import { useState } from "react";
+import { useRef } from "react";
+import html2canvas from "html2canvas";
 
 
 
@@ -25,7 +27,25 @@ const MortState = (props) => {
   const [mort_pendingdtls, setMort_pendingdtls] = useState([]);
   const [redstatus, setRedstatus] = useState([])
   const [yellowstatus, setYellowstatus] = useState([])
+  const [screenshots, setScreenshots] = useState([]);
   const total = 2388737;
+  const componentRef = useRef();
+  
+  const handleScreenshot = () => {
+          html2canvas(componentRef.current).then((canvas) => {
+              const imgData = canvas.toDataURL("image/png");
+              // Store screenshot in state (latest first)
+              setScreenshots((prev) => [imgData, ...prev]);
+  
+  
+              // Option 2: Download directly
+              const link = document.createElement("a");
+              link.href = imgData;
+              link.download = "screenshot.png";
+              link.click();
+          });
+      };
+
   const MORT_PUT_TAKEN_BY_LOVS = ["रंजीत वर्मा",
     "प्रमोद महाराज",
     'बंटी भैया',
@@ -503,7 +523,7 @@ const MortState = (props) => {
   }
 
   return (
-    <MortContext.Provider value={{Administration, redStatusDetails, yellowstatus, redstatus, deacsums, getDeactivatedMortAgg, int_sum, updateInterest, mort_pendingdtls, getPendingMortDts, formatted1, clearSnapshot, mort_snapdtls, getSnapDetails, getPendingMort, mort_pending, mort_snapcurrent, getSnapCurrent, mort, setMort, handleSubmit, setName, name, results, setResults, getMort, editMort, addMort, getAgg, mort_sum, MORT_PUT_TAKEN_BY_LOVS, total }}>
+    <MortContext.Provider value={{screenshots,componentRef,handleScreenshot,Administration, redStatusDetails, yellowstatus, redstatus, deacsums, getDeactivatedMortAgg, int_sum, updateInterest, mort_pendingdtls, getPendingMortDts, formatted1, clearSnapshot, mort_snapdtls, getSnapDetails, getPendingMort, mort_pending, mort_snapcurrent, getSnapCurrent, mort, setMort, handleSubmit, setName, name, results, setResults, getMort, editMort, addMort, getAgg, mort_sum, MORT_PUT_TAKEN_BY_LOVS, total }}>
       {props.children}
     </MortContext.Provider>
   )

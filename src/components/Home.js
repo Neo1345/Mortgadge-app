@@ -15,7 +15,7 @@ export const Home = (props) => {
 
     const { showalert } = props;
     const context = useContext(mortContext);
-    const {deacsums,getDeactivatedMortAgg,int_sum,updateInterest, addMort, getAgg, mort_sum, total, MORT_PUT_TAKEN_BY_LOVS } = context;
+    const {deacsums,getDeactivatedMortAgg,int_sum,updateInterest, addMort, getAgg, mort_sum, total, MORT_PUT_TAKEN_BY_LOVS,getMort } = context;
     const [mort, setMort] = useState({ MORT_ID: "", NAME: "", ORNAMENT_DETAILS: "", AMOUNT: "", MORT_ACTUAL_PRINCIPAL: "", START_DATE: "", MORT_PUT_BY: "", MORT_RECEIVED_DATE: "" })
     const [receivedinterest, setReceivedinterest] =useState("")
     const handleIntSubmit =(e) =>{
@@ -50,6 +50,7 @@ export const Home = (props) => {
     useEffect(() => {
         getAgg()
         getDeactivatedMortAgg()
+        getMort()
 
     }, [])
     const progress = (mort_sum / total) * 100;

@@ -17,7 +17,7 @@ const Navbar = () => {
                             <Link className={`nav-link ${location.pathname === "/" ? "active" : ""}`} aria-current="page" to="/">Entry Section</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname === "/about" ? "active" : ""}`} to="/about">End Mortgadge</Link>
+                            <Link className={`nav-link ${location.pathname === "/about" ? "active" : ""}`} to="/about">Mortgadge List</Link>
                         </li>
                         <li className="nav-item">
                             <Link className={`nav-link ${location.pathname === "/snapshot" ? "active" : ""}`} to="/snapshot">Snapshot</Link>
@@ -28,9 +28,9 @@ const Navbar = () => {
                         <li className="nav-item">
                             <Link className={`nav-link ${location.pathname === "/mortinred" ? "active" : ""}`} to="/mortinred">Mortgadge In Red</Link>
                         </li>
-                        {/* <li className="nav-item">
-                            <Link className={`nav-link ${location.pathname==="/admin"? "active": ""} text-end` } to="/admin">Administration</Link> */}
-                        {/* </li> */}
+                        <li className="nav-item">
+                            <Link className={`nav-link ${location.pathname==="/snaphistory"? "active": ""} text-end` } to="/snaphistory">Snp hist</Link> 
+                         </li>
 
                     </ul>
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
