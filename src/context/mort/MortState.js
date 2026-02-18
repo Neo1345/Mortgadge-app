@@ -63,6 +63,12 @@ const MortState = (props) => {
   }
 
   function diffInMonths(startStr, endStr) {
+
+    if (!startStr  || !endStr ) {
+    return null; // or throw an error
+  }
+  // console.log("type of datestr",typeof dateStr)
+
     // Parse dd-mm-yyyy strings
     const [startDay, startMonth, startYear] = startStr.split("-").map(Number);
     const [endDay, endMonth, endYear] = endStr.split("-").map(Number);
@@ -83,7 +89,7 @@ const MortState = (props) => {
 
   // Utility: parse dd-mm-yyyy into JS Date
   function parseDDMMYYYY(dateStr) {
-    if (!dateStr || typeof dateStr !== "string") {
+    if (!dateStr) {
     return null; // or throw an error
     }
     const [day, month, year] = dateStr.split("-").map(Number);
@@ -94,6 +100,9 @@ const MortState = (props) => {
   function monthDiffWithFraction(startDateStr, endDateStr) {
     const start = parseDDMMYYYY(startDateStr);
     const end = parseDDMMYYYY(endDateStr);
+    if (!start ||  !end ) {
+    return null; // or throw an error
+  }
 
     // Full months difference
     let months =
@@ -129,6 +138,10 @@ const MortState = (props) => {
 
   function parseDMY(dateStr) {
     // Split by dash
+    if (!dateStr ) {
+    return null; // or throw an error
+  }
+
     const [day, month, year] = dateStr.split("-").map(Number);
     // JS Date months are 0-based (0 = Jan, 11 = Dec)
     return new Date(year, month - 1, day);
@@ -137,6 +150,9 @@ const MortState = (props) => {
   function daysBetweenInclusive(date1, date2) {
     const d1 = parseDMY(date1);
     const d2 = parseDMY(date2);
+    if (!d1 || !d2 ) {
+    return null; // or throw an error
+  }
 
     // Normalize to midnight to avoid time zone issues
     d1.setHours(0, 0, 0, 0);
