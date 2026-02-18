@@ -108,7 +108,8 @@ const MortState = (props) => {
 
     // Fractional part
     const daysInMonth = new Date(anchor.getFullYear(), anchor.getMonth() + 1, 0).getDate();
-    const diffDays = (end - anchor) / (1000 * 60 * 60 * 24) + 1;
+    // const diffDays = (end - anchor) / (1000 * 60 * 60 * 24) + 1;
+    const diffDays = Math.floor((end - anchor) / (1000 * 60 * 60 * 24)) + 1;
     const fraction = diffDays / daysInMonth;
 
     return months + fraction;

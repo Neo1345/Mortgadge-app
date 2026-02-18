@@ -20,19 +20,19 @@ const MortInRed = () => {
         {
             field: "NAME", headerName: "NAME", width: 200,
             renderHeader: () => (
-                <span style={{ fontWeight: "bold" }}>NAME</span>
+                <span style={{ fontWeight: "bold" }}>नाम</span>
             ),
         },
         {
             field: "ORNAMENT_DETAILS", headerName: "ORNAMENT_DETAILS", width: 200,
             renderHeader: () => (
-                <span style={{ fontWeight: "bold" }}>ORNAMENT_DETAILS</span>
+                <span style={{ fontWeight: "bold" }}>ग्राम/आभूषणों के नाम</span>
             ),
         },
         {
             field: "AMOUNT", headerName: "AMOUNT", width: 120,
             renderHeader: () => (
-                <span style={{ fontWeight: "bold" }}>AMOUNT</span>
+                <span style={{ fontWeight: "bold" }}>मूलधन</span>
             ),
         },
         // {
@@ -44,7 +44,7 @@ const MortInRed = () => {
         {
             field: "START_DATE", headerName: "START_DATE", width: 150,
             renderHeader: () => (
-                <span style={{ fontWeight: "bold" }}>START_DATE</span>
+                <span style={{ fontWeight: "bold" }}>गिरवी रखने की तिथि</span>
             ),
         },
         {
@@ -79,7 +79,7 @@ const MortInRed = () => {
                 <strong>Mortgadge In Red Status</strong>
             </div>
             <div className="row my-2">
-                <div style={{ height: 550, width: "100%" }}>
+                <div style={{ height: 650, width: "100%" }}>
 
                     <DataGrid
                         rows={redstatus}
