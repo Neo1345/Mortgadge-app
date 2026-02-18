@@ -83,6 +83,9 @@ const MortState = (props) => {
 
   // Utility: parse dd-mm-yyyy into JS Date
   function parseDDMMYYYY(dateStr) {
+    if (!dateStr || typeof dateStr !== "string") {
+    return null; // or throw an error
+    }
     const [day, month, year] = dateStr.split("-").map(Number);
     return new Date(year, month - 1, day); // month is 0-based
   }
