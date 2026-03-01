@@ -68,10 +68,10 @@ const MortInRed = () => {
     ];
 
     useEffect(() => {
-
+        // eslint-disable-next-line
         redStatusDetails()
 
-    }, [redStatusDetails])
+    }, [])
 
     return (
         <>

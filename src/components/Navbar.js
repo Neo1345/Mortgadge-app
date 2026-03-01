@@ -28,9 +28,9 @@ const Navbar = () => {
                         <li className="nav-item">
                             <Link className={`nav-link ${location.pathname === "/mortinred" ? "active" : ""}`} to="/mortinred">Mortgadge In Red</Link>
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <Link className={`nav-link ${location.pathname==="/snaphistory"? "active": ""} text-end` } to="/snaphistory">Snp hist</Link> 
-                         </li>
+                         </li> */}
 
                     </ul>
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0">

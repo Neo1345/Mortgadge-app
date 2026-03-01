@@ -21,7 +21,7 @@ const Snapshot = (props) => {
 
     // const componentRef = useRef();
     // const [screenshots, setScreenshots] = useState([]);
-    const [value, setValue] = useState({ mort: null, int: null });
+    const [value, setValue] = useState({ mort: "", int: "" });
 
     const { showalert } = props;
     // const handleIntReceived = (e) => {
@@ -110,9 +110,9 @@ const Snapshot = (props) => {
         getSnapCurrent()
         getPendingMort()
         getSnapDetails()
-        console.log(mort_pending)
+        // console.log(mort_pending)
 
-    }, )
+    },[] )
 
     return (
         <>

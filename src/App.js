@@ -5,17 +5,17 @@ import { Home } from "./components/Home";
 import About from './components/About';
 import Snapshot from './components/Snapshot';
 import MortState from './context/mort/MortState';
-import { useState,useRef } from "react";
+import { useState } from "react";
 import Alert from "./components/Alert";
 import PendingMort from './components/PendingMort';
 import MortInRed from './components/MortInRed';
 import Admin from './components/Admin';
-import SnapHistory from './components/SnapHistory';
+// import SnapHistory from './components/SnapHistory';
 
 function App() {
 
   const [alert,setAlert] = useState(null);
-  const alertRef = useRef(null);
+  // const alertRef = useRef(null);
 
 
   const showAlert = (message,type)=> {
@@ -41,7 +41,7 @@ function App() {
           <Route path="/snapshot" element={<Snapshot showalert = {showAlert}/>} />
           <Route path="/pendingmort" element={<PendingMort showalert = {showAlert}/>} />
           <Route path="/mortinred" element={<MortInRed/>} />
-          <Route path="/snaphistory" element={<SnapHistory/>} />
+          {/* <Route path="/snaphistory" element={<SnapHistory/>} /> */}
            <Route path="/admin" element={<Admin/>} />
         </Routes>
         </div>

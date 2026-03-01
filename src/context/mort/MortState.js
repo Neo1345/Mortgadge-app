@@ -2,7 +2,9 @@ import MortContext from "./mortContext";
 import { useState } from "react";
 import { useRef } from "react";
 import html2canvas from "html2canvas";
-
+// import * as XLSX from "xlsx";
+// import { saveAs } from "file-saver";
+// import ExcelJS from "exceljs";
 
 
 const MortState = (props) => {
@@ -27,24 +29,48 @@ const MortState = (props) => {
   const [mort_pendingdtls, setMort_pendingdtls] = useState([]);
   const [redstatus, setRedstatus] = useState([])
   const [yellowstatus, setYellowstatus] = useState([])
-  const [screenshots, setScreenshots] = useState([]);
+  // const [screenshots, setScreenshots] = useState([]);
   const total = 2388737;
   const componentRef = useRef();
-  
-  const handleScreenshot = () => {
-          html2canvas(componentRef.current).then((canvas) => {
-              const imgData = canvas.toDataURL("image/png");
-              // Store screenshot in state (latest first)
-              setScreenshots((prev) => [imgData, ...prev]);
-  
-  
-              // Option 2: Download directly
-              const link = document.createElement("a");
-              link.href = imgData;
-              link.download = "screenshot.png";
-              link.click();
-          });
-      };
+
+  //  function s2ab(s) {
+  //       const buf = new ArrayBuffer(s.length);
+  //       const view = new Uint8Array(buf);
+  //       for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+  //       return buf;
+  //     } 
+  const handleScreenshot = async () => {
+    // html2canvas(componentRef.current).then((canvas) => {
+    //     const imgData = canvas.toDataURL("image/png");
+    //     // Store screenshot in state (latest first)
+    //     // setScreenshots((prev) => [imgData, ...prev]);
+
+
+    //     // Option 2: Download directly
+    //     const link = document.createElement("a");
+    //     link.href = imgData;
+    //     link.download = "screenshot.png";
+    //     link.click();
+    // });
+
+
+    const canvas = await html2canvas(componentRef.current);
+    const imgData = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = imgData;
+    link.download = "screenshot.png";
+    link.click();
+
+    // Send screenshot to backend
+    await fetch(`${host}/api/mortgde/screenshot_saver`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ imgData }),
+    });
+
+    // alert("screenshot has been saved in document snapshots_history.xlsx");
+
+  };
 
   const MORT_PUT_TAKEN_BY_LOVS = ["रंजीत वर्मा",
     "प्रमोद महाराज",
@@ -64,10 +90,10 @@ const MortState = (props) => {
 
   function diffInMonths(startStr, endStr) {
 
-    if (!startStr  || !endStr ) {
-    return null; // or throw an error
-  }
-  // console.log("type of datestr",typeof dateStr)
+    if (!startStr || !endStr) {
+      return null; // or throw an error
+    }
+    // console.log("type of datestr",typeof dateStr)
 
     // Parse dd-mm-yyyy strings
     const [startDay, startMonth, startYear] = startStr.split("-").map(Number);
@@ -90,7 +116,7 @@ const MortState = (props) => {
   // Utility: parse dd-mm-yyyy into JS Date
   function parseDDMMYYYY(dateStr) {
     if (!dateStr) {
-    return null; // or throw an error
+      return null; // or throw an error
     }
     const [day, month, year] = dateStr.split("-").map(Number);
     return new Date(year, month - 1, day); // month is 0-based
@@ -100,9 +126,9 @@ const MortState = (props) => {
   function monthDiffWithFraction(startDateStr, endDateStr) {
     const start = parseDDMMYYYY(startDateStr);
     const end = parseDDMMYYYY(endDateStr);
-    if (!start ||  !end ) {
-    return null; // or throw an error
-  }
+    if (!start || !end) {
+      return null; // or throw an error
+    }
 
     // Full months difference
     let months =
@@ -138,9 +164,9 @@ const MortState = (props) => {
 
   function parseDMY(dateStr) {
     // Split by dash
-    if (!dateStr ) {
-    return null; // or throw an error
-  }
+    if (!dateStr) {
+      return null; // or throw an error
+    }
 
     const [day, month, year] = dateStr.split("-").map(Number);
     // JS Date months are 0-based (0 = Jan, 11 = Dec)
@@ -150,9 +176,9 @@ const MortState = (props) => {
   function daysBetweenInclusive(date1, date2) {
     const d1 = parseDMY(date1);
     const d2 = parseDMY(date2);
-    if (!d1 || !d2 ) {
-    return null; // or throw an error
-  }
+    if (!d1 || !d2) {
+      return null; // or throw an error
+    }
 
     // Normalize to midnight to avoid time zone issues
     d1.setHours(0, 0, 0, 0);
@@ -504,10 +530,16 @@ const MortState = (props) => {
 
     const json = await response.json();
     console.log('json response of redStatusDetails', json)
+    const enriched = json.map(row => ({
+      ...row,
+      INTEREST: calcInterest(row.START_DATE, formatted1, row.AMOUNT),
+      INTEREST_REF: calcInterestRef(row.START_DATE, formatted1, row.AMOUNT),
+      INTEREST_BY_30: calcInterestby30(row.START_DATE, formatted1, row.AMOUNT)
+    }));
 
     let red_status_list = []
     let yellow_status_list = []
-    for (const row of json) {
+    for (const row of enriched) {
 
       if (row.STATUS === 1) {
         red_status_list = [...red_status_list, row];
@@ -532,7 +564,7 @@ const MortState = (props) => {
         // "auth-token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjk0YjdiMGRhNDM0NWZhMDllNzFkOTc0In0sImlhdCI6MTc2NjU1NzgyOX0.c_8h_S3-QV1roXWsHjDaYMhmOHVNCFXwZCZ-HzeFRhI"
       },
       body: JSON.stringify({
-        type:type
+        type: type
       })
     }
     );
@@ -543,7 +575,7 @@ const MortState = (props) => {
   }
 
   return (
-    <MortContext.Provider value={{screenshots,componentRef,handleScreenshot,Administration, redStatusDetails, yellowstatus, redstatus, deacsums, getDeactivatedMortAgg, int_sum, updateInterest, mort_pendingdtls, getPendingMortDts, formatted1, clearSnapshot, mort_snapdtls, getSnapDetails, getPendingMort, mort_pending, mort_snapcurrent, getSnapCurrent, mort, setMort, handleSubmit, setName, name, results, setResults, getMort, editMort, addMort, getAgg, mort_sum, MORT_PUT_TAKEN_BY_LOVS, total }}>
+    <MortContext.Provider value={{  componentRef, handleScreenshot, Administration, redStatusDetails, yellowstatus, redstatus, deacsums, getDeactivatedMortAgg, int_sum, updateInterest, mort_pendingdtls, getPendingMortDts, formatted1, clearSnapshot, mort_snapdtls, getSnapDetails, getPendingMort, mort_pending, mort_snapcurrent, getSnapCurrent, mort, setMort, handleSubmit, setName, name, results, setResults, getMort, editMort, addMort, getAgg, mort_sum, MORT_PUT_TAKEN_BY_LOVS, total }}>
       {props.children}
     </MortContext.Provider>
   )

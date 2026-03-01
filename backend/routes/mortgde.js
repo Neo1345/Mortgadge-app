@@ -2,6 +2,70 @@ const express = require('express');
 const router = express.Router();
 const oracledb = require('oracledb');
 // const fetchuser = require('../middleware/fetchuser');
+const fs = require("fs");
+// import * as XLSX from "xlsx";
+// import { saveAs } from "file-saver";
+const ExcelJS = require("exceljs");
+
+const FILE_PATH = "./snapshots_history.xlsx";
+
+router.post("/screenshot_saver", async (req, res) => {
+  try {
+    const { imgData } = req.body;
+    const base64 = imgData.split(",")[1];
+    const buffer = Buffer.from(base64, "base64");
+
+    // Load or create workbook
+    let workbook;
+    if (fs.existsSync(FILE_PATH)) {
+      workbook = new ExcelJS.Workbook();
+      await workbook.xlsx.readFile(FILE_PATH);
+    } else {
+      workbook = new ExcelJS.Workbook();
+      const ws = workbook.addWorksheet("Reciepts History");
+      ws.addRow(["Timestamp", "Screenshot"]);
+    }
+
+    const worksheet = workbook.getWorksheet("Reciepts History");
+
+    // Add timestamp row
+    let lastRowNumber = worksheet.lastRow.number;
+    lastRowNumber += 30;
+    const timestamp = new Date().toLocaleString();
+    const row = worksheet.insertRow(lastRowNumber,[timestamp]);
+
+    // Embed image next to timestamp
+    const imageId = workbook.addImage({
+      buffer,
+      extension: "png",
+    });
+
+    // worksheet.addImage(imageId, {
+    //   tl: { col: 1, row: row.number - 1 }, // place beside timestamp
+    //   ext: { width: 200, height: 150 },
+    // });
+
+    // let lastRowNumber = worksheet.lastRow.number;
+    console.log(lastRowNumber)
+
+    // Place image at the bottom, next to timestamp
+    worksheet.addImage(imageId, {
+      tl: { col: 1, row: lastRowNumber - 1 }, // column B, last row
+      ext: { width: 800, height: 500 },
+    });
+
+    // lastRowNumber += 500;
+
+    // Save workbook back to disk
+    await workbook.xlsx.writeFile(FILE_PATH);
+
+    res.json({ success: true, message: "Snapshot appended to Excel" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 
 router.get('/fetchmortinfo', async (req, res) => {
   let connection;
@@ -55,7 +119,6 @@ PENDING_MORT_AMOUNT, PENDING_INTEREST_AMOUNT, ACTUAL_INTEREST_RECEIVED,  ACTIVE_
   }
   if (mode === 'redstatusdetails') {
     query = ` select name,ornament_details,sum(amount) as amount,min(to_char(start_date,'DD-MM-YYYY') ) as start_date,
-              sum(interest) as interest ,sum(interest_ref) as interest_ref ,sum(interest_by_30) as interest_by_30 ,
              max( case when to_date(sysdate,'dd-mm-yyyy')-to_date(start_date,'dd-mm-yyyy') >=340 and 
               to_date(sysdate,'dd-mm-yyyy')-to_date(start_date,'dd-mm-yyyy') < 365 then 0 
               else 1
