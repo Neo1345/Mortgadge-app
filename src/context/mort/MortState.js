@@ -76,7 +76,8 @@ const MortState = (props) => {
     "प्रमोद महाराज",
     'बंटी भैया',
     "आशू डेहरिया",
-    "किशोर"
+    "किशोर",
+    "संपु यादव"
   ]
   const todayIST1 = new Date().toLocaleDateString("en-GB", {
     timeZone: "Asia/Kolkata", // IST timezone

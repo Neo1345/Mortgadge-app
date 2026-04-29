@@ -159,9 +159,9 @@ const Snapshot = (props) => {
                     <div className="col-md-4">
                         <h3>Date: {formatted1}</h3>
                     </div>
-                    <div className="col-md-8">
+                    {/* <div className="col-md-8">
                         <h5><strong>श्री अविनाश (बंटी भैया) चौरई</strong></h5>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="container"
                     style={{

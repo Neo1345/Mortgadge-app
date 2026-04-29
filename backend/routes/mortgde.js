@@ -350,7 +350,8 @@ router.post('/addmort', async (req, res) => {
     let received_amount = parseInt(amount);
 
     const update_rows = await connection.execute(
-      `SELECT mort_id as id, pending_mort_amount,to_char(end_date,'dd-mm-yyyy') as end_date
+      `SELECT mort_id as id, pending_mort_amount,to_char(end_date,'dd-mm-yyyy') as end_date,
+      to_char(start_date,'dd-mm-yyyy') as start_date
      FROM mortgadgeaccounts where pending_mort_amount > 0 
      and end_date = to_date(:start_date,'yyyy-mm-dd')`,
       { start_date },
@@ -377,8 +378,8 @@ router.post('/addmort', async (req, res) => {
 
       await connection.execute(
         `UPDATE mortgadgeaccounts SET pending_mort_amount = :newPending WHERE mort_id = :id
-        and end_date = to_date(:end_date,'dd-mm-yyyy')`,
-        { newPending, id: row.ID, end_date: row.END_DATE },
+        and end_date = to_date(:end_date,'dd-mm-yyyy') and start_date =to_date(:start_date,'dd-mm-yyyy') `,
+        { newPending, id: row.ID, end_date: row.END_DATE,start_date:row.START_DATE },
         { autoCommit: true }
       );
     }
