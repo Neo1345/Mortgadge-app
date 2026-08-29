@@ -30,7 +30,7 @@ const MortState = (props) => {
   const [redstatus, setRedstatus] = useState([])
   const [yellowstatus, setYellowstatus] = useState([])
   // const [screenshots, setScreenshots] = useState([]);
-  const total = 2388737;
+  const total = 2888737;//added 500000 on 13/07/2026
   const componentRef = useRef();
 
   //  function s2ab(s) {
@@ -460,7 +460,7 @@ const MortState = (props) => {
   // }
 
   // //edit a note
-  const editMort = async (id, start_date, end_date, mort_taken_by, actual_interest_received, interest, interest_ref, interest_by_30, pending_interest_amount) => {
+  const editMort = async (id, start_date, end_date, mort_taken_by, actual_interest_received, interest, interest_ref, interest_by_30, pending_interest_amount,mort_received_date) => {
 
     console.log(id, start_date)
     const response = await fetch(`${host}/api/mortgde/updatemortgde/${id}/${start_date}`, {
@@ -476,7 +476,8 @@ const MortState = (props) => {
         interest: interest,
         interest_ref: interest_ref,
         interest_by_30: interest_by_30,
-        pending_interest_amount: pending_interest_amount
+        pending_interest_amount: pending_interest_amount,
+        mort_received_date:mort_received_date
       })
     }
     );

@@ -156,7 +156,7 @@ router.put('/updatemortgde/:id/:start_date', async (req, res) => {
   let connection;
   try {
     console.log(req.body)
-    const { end_date, mort_taken_by, actual_interest_received, interest, interest_ref, interest_by_30, pending_interest_amount } = req.body;
+    const { end_date, mort_taken_by, actual_interest_received, interest, interest_ref, interest_by_30, pending_interest_amount,mort_received_date } = req.body;
     const mort_id = req.params.id;
     const start_date = req.params.start_date;
 
@@ -177,13 +177,14 @@ router.put('/updatemortgde/:id/:start_date', async (req, res) => {
        pending_mort_amount = amount,
        pending_interest_amount = :pending_interest_amount,
        active_status = 0 ,current_day_flag = 'Y',fw_mort_reference_date = TO_DATE(:end_date, 'YYYY-MM-DD')
-       WHERE  mort_id = :id and start_date = TO_DATE(:start_date, 'DD-MM-YYYY')`,
+       WHERE  mort_id = :id and start_date = TO_DATE(:start_date, 'DD-MM-YYYY') and mort_received_date = TO_DATE(:mort_received_date, 'DD-MM-YYYY')`,
       {
         end_date, id: mort_id, start_date: start_date, actual_interest_received, mort_taken_by,
         interest,
         interest_ref,
         interest_by_30,
-        pending_interest_amount
+        pending_interest_amount,
+        mort_received_date
       },
       { autoCommit: true } // commit changes immediately
     );

@@ -25,7 +25,7 @@ async function initOracle() {
   try {
     await oracledb.createPool({
       user: "system",
-      password: "Broad1234",
+      password: "Freak1234",
       connectString: "localhost:1521/XE",
       poolAlias: 'default' 
     });

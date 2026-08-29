@@ -122,7 +122,7 @@ const About = (props) => {
             window.scrollTo({ top: 0, behavior: "smooth" });
             return;
         }
-        editMort(emort.MORT_ID, emort.START_DATE, emort.END_DATE, emort.MORT_TAKEN_BY, emort.ACTUAL_INTEREST_RECEIVED, emort.INTEREST, emort.INTEREST_REF, emort.INTEREST_BY_30, emort.PENDING_INTEREST_AMOUNT);
+        editMort(emort.MORT_ID, emort.START_DATE, emort.END_DATE, emort.MORT_TAKEN_BY, emort.ACTUAL_INTEREST_RECEIVED, emort.INTEREST, emort.INTEREST_REF, emort.INTEREST_BY_30, emort.PENDING_INTEREST_AMOUNT,emort.MORT_RECEIVED_DATE);
         refClose.current.click();
         showalert("Mortgadge has been taken and entry is updated", "success")
         window.scrollTo({ top: 0, behavior: "smooth" });
