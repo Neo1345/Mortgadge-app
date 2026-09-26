@@ -82,6 +82,17 @@ const MortState = (props) => {
   const todayIST1 = new Date().toLocaleDateString("en-GB", {
     timeZone: "Asia/Kolkata", // IST timezone
   });
+//EDitable code to have specific date
+// const parts = todayIST1.split("/");
+// const d = new Date(parts[2], parts[1] - 1, parts[0]);
+
+// // Subtract one day
+// d.setDate(d.getDate() - 1);
+
+// const formatted1 = d.toLocaleDateString("en-GB", {
+//   timeZone: "Asia/Kolkata",
+// }).replace(/\//g, "-");
+
   const formatted1 = todayIST1.replace(/\//g, "-");
 
   function daysInMonth(year, month) {
